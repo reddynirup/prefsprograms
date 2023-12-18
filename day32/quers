@@ -1,0 +1,118 @@
+----->query1
+/*
+Write an MySQL query to find the books priced between $20 and $30
+
+Sample Ouput:
+-------------
++---------+---------+-----------+-------+----------------+
+| book_id | title   | author_id | price | published_date |
++---------+---------+-----------+-------+----------------+
+|       2 | Book 2  |         2 | 29.99 | 2023-02-15     |
+|       4 | Book 4  |         3 | 24.99 | 2023-04-10     |
+|       7 | Book 7  |         2 | 21.99 | 2023-07-15     |
++---------+---------+-----------+-------+----------------+                                                                          
+
+*/
+
+use bookstore;
+
+-- Write your query below
+SELECT *
+FROM books
+WHERE price BETWEEN 20 AND 30;
+
+
+-----> QUERY 2 <-----
+/*
+Write an MySQL query to find and display the books ordered by price 
+in descending order
+
+Sample Ouput:
+-------------
++---------+---------+-----------+-------+----------------+
+| book_id | title   | author_id | price | published_date |
++---------+---------+-----------+-------+----------------+
+|      13 | Book 13 |         6 | 32.99 | 2024-01-01     |
+|       2 | Book 2  |         2 | 29.99 | 2023-02-15     |
+|      17 | Book 17 |         6 | 28.99 | 2024-05-05     |
++---------+---------+-----------+-------+----------------+
+
+*/
+
+use bookstore;
+
+-- Write your query below
+SELECT *
+FROM books
+ORDER BY price DESC;
+
+
+------>QUERY 3<-----
+/*
+Write an MySQL query to count the number of books published by each author
+and display the result.
+
+Sample Ouput:
+-------------
++-----------+------------+
+| author_id | book_count |
++-----------+------------+
+|         1 |          3 |
+|         2 |          3 |
+|         3 |          2 |
++-----------+------------+
+*/
+
+use bookstore;
+
+-- Write your query below
+SELECT author_id,COUNT(*) AS book_count FROM books GROUP BY author_id;
+
+
+
+
+------>QUERY 4<------
+/*
+Write an MySQL query to find all the authors who have published more than 2 books.
+
+
+Sample Ouput:
+-------------
++-----------+------------+
+| author_id | book_count |
++-----------+------------+
+|         1 |          3 |
+|         2 |          3 |
++-----------+------------+
+
+*/
+
+use bookstore;
+
+-- Write your query below
+SELECT author_id,COUNT(*) AS book_count FROM books GROUP BY author_id HAVING book_count>2;
+
+
+
+
+------->QUERY 5<-----
+/*
+Write an MySQL query to find the author with the highest-priced book
+
+Sample Ouput:
+-------------
++-------------+---------+-------+
+| author_name | title   | price |
++-------------+---------+-------+
+| Author F    | Book 13 | 32.99 |
++-------------+---------+-------+
+
+*/
+
+use bookstore;
+
+-- Write your query below
+SELECT author_name,title,price 
+FROM authors INNER JOIN books ON authors.author_id=books.author_id
+ORDER BY price DESC
+LIMIT 1;

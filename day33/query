@@ -1,0 +1,234 @@
+-------->QUERY 1<-------
+/*
+Write an MySQL query to count the number of books published in each year 
+and display the results in descending order
+
+TABLE books:
++----------------+---------------+------+-----+---------+
+| Field          | Type          | Null | Key | Default |
++----------------+---------------+------+-----+---------+
+| book_id        | int           | NO   | PRI | NULL    |       
+| title          | varchar(255)  | YES  |     | NULL    |       
+| author_id      | int           | YES  |     | NULL    |       
+| price          | decimal(10,2) | YES  |     | NULL    |       
+| published_date | date          | YES  |     | NULL    |       
++----------------+---------------+------+-----+---------+
+
+
+TABLE authors:
++-------------+--------------+------+-----+---------+
+| Field       | Type         | Null | Key | Default |
++-------------+--------------+------+-----+---------+
+| author_id   | int          | NO   | PRI | NULL    |
+| author_name | varchar(100) | YES  |     | NULL    |
++-------------+--------------+------+-----+---------+
+
+
+Sample Ouput:
+-------------
++------------------+------------+
+| publication_year | book_count |
++------------------+------------+
+|             2024 |          6 |
+|             2023 |         12 |
++------------------+------------+
+
+*/
+
+use bookstore;
+
+-- Write your query below
+SELECT YEAR(published_date) AS publication_year,COUNT(*) AS book_count
+FROM books
+GROUP BY YEAR(published_date)
+ORDER BY publication_year DESC;
+
+
+------>QUERY 2<-----------
+/*
+Write an MySQL query to find the average price of books for authors 
+who have published more than 1 book.
+
+
+TABLE books:
++----------------+---------------+------+-----+---------+
+| Field          | Type          | Null | Key | Default |
++----------------+---------------+------+-----+---------+
+| book_id        | int           | NO   | PRI | NULL    |       
+| title          | varchar(255)  | YES  |     | NULL    |       
+| author_id      | int           | YES  |     | NULL    |       
+| price          | decimal(10,2) | YES  |     | NULL    |       
+| published_date | date          | YES  |     | NULL    |       
++----------------+---------------+------+-----+---------+
+
+
+TABLE authors:
++-------------+--------------+------+-----+---------+
+| Field       | Type         | Null | Key | Default |
++-------------+--------------+------+-----+---------+
+| author_id   | int          | NO   | PRI | NULL    |
+| author_name | varchar(100) | YES  |     | NULL    |
++-------------+--------------+------+-----+---------+
+
+
+Sample Ouput:
+-------------
++-----------+-----------+
+| author_id | avg_price |
++-----------+-----------+
+|         1 | 17.656667 |
+|         2 | 20.656667 |
++-----------+-----------+
+
+*/
+
+use bookstore;
+
+-- Write your query below
+SELECT author_id,AVG(price) AS avg_price
+FROM books
+GROUP BY author_id
+HAVING COUNT(*)>1;
+
+
+---------->QUERY 3<--------
+/*
+Write an MySQL query to find list authors and the total price of their books,
+ordered by the total price in descending order.
+
+
+TABLE books:
++----------------+---------------+------+-----+---------+
+| Field          | Type          | Null | Key | Default |
++----------------+---------------+------+-----+---------+
+| book_id        | int           | NO   | PRI | NULL    |       
+| title          | varchar(255)  | YES  |     | NULL    |       
+| author_id      | int           | YES  |     | NULL    |       
+| price          | decimal(10,2) | YES  |     | NULL    |       
+| published_date | date          | YES  |     | NULL    |       
++----------------+---------------+------+-----+---------+
+
+
+TABLE authors:
++-------------+--------------+------+-----+---------+
+| Field       | Type         | Null | Key | Default |
++-------------+--------------+------+-----+---------+
+| author_id   | int          | NO   | PRI | NULL    |
+| author_name | varchar(100) | YES  |     | NULL    |
++-------------+--------------+------+-----+---------+
+
+
+Sample Ouput:
+-------------
++-------------+-------------+
+| author_name | total_price |
++-------------+-------------+
+| Author F    |       81.97 |
+| Author G    |       64.97 |
++-------------+-------------+
+
+*/
+
+use bookstore;
+
+-- Write your query below
+SELECT authors.author_name ,SUM(price) AS total_price
+FROM books INNER JOIN authors ON books.author_id=authors.author_id
+GROUP BY author_name
+ORDER BY total_price DESC;
+
+
+---------->QUERY 4<-------
+/*
+Write an MySQL query to display books published in between '01-04-2023' 
+to '31-03-2024' and order them by the author's name.
+
+
+TABLE books:
++----------------+---------------+------+-----+---------+
+| Field          | Type          | Null | Key | Default |
++----------------+---------------+------+-----+---------+
+| book_id        | int           | NO   | PRI | NULL    |       
+| title          | varchar(255)  | YES  |     | NULL    |       
+| author_id      | int           | YES  |     | NULL    |       
+| price          | decimal(10,2) | YES  |     | NULL    |       
+| published_date | date          | YES  |     | NULL    |       
++----------------+---------------+------+-----+---------+
+
+
+TABLE authors:
++-------------+--------------+------+-----+---------+
+| Field       | Type         | Null | Key | Default |
++-------------+--------------+------+-----+---------+
+| author_id   | int          | NO   | PRI | NULL    |
+| author_name | varchar(100) | YES  |     | NULL    |
++-------------+--------------+------+-----+---------+
+
+Sample Ouput:
+-------------
++---------+-------------+----------------+
+| title   | author_name | published_date |
++---------+-------------+----------------+
+| Book 6  | Author A    | 2023-06-01     |
+| Book 5  | Author B    | 2023-05-05     |
++---------+-------------+----------------+
+
+*/
+
+use bookstore;
+
+-- Write your query below
+SELECT title,author_name,published_date
+FROM books INNER JOIN authors ON books.author_id=authors.author_id
+WHERE published_date BETWEEN "2023-04-01" AND "2024-03-31"
+ORDER BY author_name;
+
+
+
+
+
+-------->QUERY 5<-------
+/*
+Write an MySQL query to find the books published in the latest year 
+for each author.
+
+TABLE books:
++----------------+---------------+------+-----+---------+
+| Field          | Type          | Null | Key | Default |
++----------------+---------------+------+-----+---------+
+| book_id        | int           | NO   | PRI | NULL    |       
+| title          | varchar(255)  | YES  |     | NULL    |       
+| author_id      | int           | YES  |     | NULL    |       
+| price          | decimal(10,2) | YES  |     | NULL    |       
+| published_date | date          | YES  |     | NULL    |       
++----------------+---------------+------+-----+---------+
+
+
+TABLE authors:
++-------------+--------------+------+-----+---------+
+| Field       | Type         | Null | Key | Default |
++-------------+--------------+------+-----+---------+
+| author_id   | int          | NO   | PRI | NULL    |
+| author_name | varchar(100) | YES  |     | NULL    |
++-------------+--------------+------+-----+---------+
+
+
+Sample Ouput:
+-------------
++-----------+-----------------------+
+| author_id | latest_published_date |
++-----------+-----------------------+
+|         1 | 2023-06-01            |
+|         2 | 2023-07-15            |
++-----------+-----------------------+
+
+
+
+*/
+
+use bookstore;
+
+-- Write your query below
+SELECT author_id,MAX(published_date) AS latest_published_date
+FROM books
+GROUP BY author_id;
